@@ -11225,3 +11225,6 @@ hr {
   max-width: 100%;
   border-radius: 5px;
 }
+.cv-thumbnail:hover {
+  background: url(images/thumbnail-cv-hover.png)
+}
