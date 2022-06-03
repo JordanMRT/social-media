@@ -11219,3 +11219,9 @@ hr {
     box-shadow: none !important;
   }
 }
+
+.cv-thumbnail {
+  vertical-align: middle;
+  max-width: 100%;
+  border-radius: 5px;
+}
