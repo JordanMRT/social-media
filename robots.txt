@@ -1,2 +1,2 @@
 User-agent: Googlebot-Image
-Disallow: /images/thumbnail-cv.png
+Disallow: /social-media/images/thumbnail-cv.png
