@@ -11228,3 +11228,25 @@ img.cv-thumbnail {
 img.cv-thumbnail:hover {
   background: url(images/thumbnail-cv-hover.png)
 }
+
+.hover-effect {
+  position: relative;
+  z-index: 0;
+}
+
+.hover-effect::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border: 2px solid #000;
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: -1;
+}
+
+.hover-effect:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
