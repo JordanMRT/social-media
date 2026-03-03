@@ -584,9 +584,13 @@
       line-height: 1.8;
       color: var(--text-muted);
     }───────────────────────────────────────────────── */
-    .contact-items { display: flex;
-      flex-direction: row;
-      gap: .75rem; }
+    .contact-items {
+  display: flex;
+  flex-direction: row;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+    .contact-item { flex: 1 1 200px; min-width: 0; }
 
     .contact-item {
       display: flex; align-items: center; gap: 1rem;
@@ -702,6 +706,8 @@
       .about-info-grid { grid-template-columns: 1fr; }
       .hero-photo-wrap { width: min(280px, 80vw); }
       .softskills-grid { grid-template-columns: 1fr; }
+      .contact-items { flex-direction: column; }
+      .hero-badge { right: 0; left: 50%; transform: translateX(-50%); white-space: nowrap; }
     }
   </style>
 </head>
@@ -1081,7 +1087,8 @@
 
   // ── DARK MODE ────────────────────────────────────────────────────
   const toggle = document.getElementById('themeToggle');
-  const saved = localStorage.getItem('theme') || 'light';
+  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const saved = localStorage.getItem('theme') || (systemDark ? 'dark' : 'light');
   document.documentElement.dataset.theme = saved;
   toggle.textContent = saved === 'dark' ? '☀️' : '🌙';
   toggle.addEventListener('click', () => {
