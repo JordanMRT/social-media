@@ -703,11 +703,12 @@
       .burger { display: flex; }
     }
     @media (max-width: 600px) {
-      .about-info-grid { grid-template-columns: 1fr; }
+      .about-info-grid { grid-template-columns: 1fr !important; }
+      .about-info-grid .info-card { grid-column: span 1 !important; }
       .hero-photo-wrap { width: min(280px, 80vw); }
       .softskills-grid { grid-template-columns: 1fr; }
       .contact-items { flex-direction: column; }
-      .hero-badge { right: 0; left: 50%; transform: translateX(-50%); white-space: nowrap; }
+      .hero-badge { right: 5%; left: auto; font-size: .72rem; padding: .5rem .75rem; }
     }
   </style>
 </head>
@@ -801,7 +802,7 @@
       </div>
       <div class="info-card">
         <p class="label">Localisation</p>
-        <p class="value">Montpellier, 34</p>
+        <p class="value">Montpellier, 34000</p>
       </div>
       <div class="info-card">
         <p class="label">Email</p>
