@@ -18,6 +18,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
 
   <style>
+    @font-face {
+    font-family : DrawnLetters;
+    src: url(DrawnLetters-Regular.ttf);
+}
     /* ─── CSS VARIABLES ─────────────────────────────────────────── */
     :root {
       /*--bg:          #f5f3ef;
@@ -359,7 +363,10 @@
     }
 
     /* ─── ABOUT ─────────────────────────────────────────────────── */
-    #about { background: var(--bg2); }
+    #about {
+      background: var(--bg2);
+    }
+
     .about-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -434,14 +441,21 @@
     .skill-icon {
       width: 56px; height: 56px;
       border-radius: 14px;
-      background: color-mix(in srgb, var(--accent) 12%, transparent);
+      /*background: color-mix(in srgb, var(--accent) 12%, transparent);*/
       display: flex; align-items: center; justify-content: center;
       font-size: 1.6rem;
       margin: 0 auto 1rem;
       transition: background .2s;
+      filter: drop-shadow( 0 5px 5px #21212155);
     }
-    .skill-card:hover .skill-icon { background: color-mix(in srgb, var(--accent) 20%, transparent); }
-    .skill-card h3 { font-family: 'Plus Jakarta Sans', sans-serif; font-weight: 700; font-size: 1.05rem; }
+    .skill-card:hover .skill-icon { /*background: color-mix(in srgb, var(--accent) 20%, transparent);*/ }
+    .skill-card h3 {
+      /*font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;*/
+    font-size: 1.7em;
+    font-family: 'DrawnLetters', 'Plus Jakarta Sans', sans-serif;
+    letter-spacing: -.07em;}
 
     /* ─── SOFT SKILLS ───────────────────────────────────────────── */
     #skills { background: var(--bg2); }
@@ -497,6 +511,7 @@
       aspect-ratio: 4/3;
       box-shadow: var(--shadow);
       cursor: pointer;
+      border: solid 1px var(--bg2);
     }
     .portfolio-card img {
       width: 100%; height: 100%; object-fit: cover;
@@ -713,7 +728,8 @@
 }
 
     [data-theme="dark"] .mascot {
-      filter: invert();
+      /* filter: invert(); */
+      filter: drop-shadow(0px 0px 55px var(--accent));
     }
 
     /* ─── COPYRIGHT ────────────────────────────────────────────────── */
@@ -816,6 +832,7 @@
   }
 
 }
+
 /* ─── TEXTURE ────────────────────────────────────────────── */
   .texture {
     position: fixed;
@@ -851,7 +868,7 @@
     <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-right">
-    <button class="theme-toggle" id="themeToggle" aria-label="Changer le thème">🌙</button>
+    <button class="theme-toggle" id="themeToggle" aria-label="Changer le thème"><img src="drawnmoon-theme.png"></button>
     <div class="burger" id="burger" aria-label="Menu">
       <span></span><span></span><span></span>
     </div>
@@ -953,19 +970,19 @@
   <p class="section-sub reveal">Plusieurs cordes à mon arc pour maximiser votre croissance.</p>
   <div class="skills-grid">
     <div class="skill-card reveal reveal-delay-1">
-      <div class="skill-icon">🎨</div>
+      <div class="skill-icon"><img src="drawnphotoshop.png" alt="Photoshop"></div>
       <h3>Photoshop</h3>
     </div>
     <div class="skill-card reveal reveal-delay-2">
-      <div class="skill-icon">📷</div>
+      <div class="skill-icon"><img src="drawnlightroom.png" alt="Lightroom"></div>
       <h3>Lightroom</h3>
     </div>
     <div class="skill-card reveal reveal-delay-3">
-      <div class="skill-icon">✏️</div>
+      <div class="skill-icon"><img src="drawnillustrator.png" alt="Illustrator"></div>
       <h3>Illustrator</h3>
     </div>
     <div class="skill-card reveal reveal-delay-4">
-      <div class="skill-icon">📱</div>
+      <div class="skill-icon"><img src="drawnsocialmedia.png" alt="Réseaux sociaux"></div>
       <h3>Réseaux Sociaux</h3>
     </div>
   </div>
@@ -1208,12 +1225,12 @@
   const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const saved = localStorage.getItem('theme') || (systemDark ? 'dark' : 'light');
   document.documentElement.dataset.theme = saved;
-  toggle.textContent = saved === 'dark' ? '☀️' : '🌙';
+  toggle.innerHTML = saved === 'dark' ? '<img src="drawnsun-theme.png" style="width:22px;height:22px;">' : '<img src="drawnmoon-theme.png" style="width:22px;height:22px;">';
   toggle.addEventListener('click', () => {
     const isDark = document.documentElement.dataset.theme === 'dark';
     const next = isDark ? 'light' : 'dark';
     document.documentElement.dataset.theme = next;
-    toggle.textContent = next === 'dark' ? '☀️' : '🌙';
+    toggle.innerHTML = next === 'dark' ? '<img src="drawnsun-theme.png" style="width:22px;height:22px;">' : '<img src="drawnmoon-theme.png" style="width:22px;height:22px;">';
     localStorage.setItem('theme', next);
   });
 
