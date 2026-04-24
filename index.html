@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-theme="light">
+<html lang="fr">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -448,7 +448,7 @@
       transition: background .2s;
       filter: drop-shadow( 0 5px 5px #21212155);
     }
-    .skill-card:hover .skill-icon { /*background: color-mix(in srgb, var(--accent) 20%, transparent);*/ }
+    /*.skill-card:hover .skill-icon { /*background: color-mix(in srgb, var(--accent) 20%, transparent); }*/
     .skill-card h3 {
       /*font-family: 'Plus Jakarta Sans', sans-serif;
     font-weight: 700;
@@ -1220,19 +1220,32 @@
     nav.classList.toggle('scrolled', window.scrollY > 30);
   }, { passive: true });
 
-  // ── DARK MODE ────────────────────────────────────────────────────
-  const toggle = document.getElementById('themeToggle');
-  const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const saved = localStorage.getItem('theme') || (systemDark ? 'dark' : 'light');
-  document.documentElement.dataset.theme = saved;
-  toggle.innerHTML = saved === 'dark' ? '<img src="drawnsun-theme.png" style="width:22px;height:22px;">' : '<img src="drawnmoon-theme.png" style="width:22px;height:22px;">';
-  toggle.addEventListener('click', () => {
-    const isDark = document.documentElement.dataset.theme === 'dark';
-    const next = isDark ? 'light' : 'dark';
-    document.documentElement.dataset.theme = next;
-    toggle.innerHTML = next === 'dark' ? '<img src="drawnsun-theme.png" style="width:22px;height:22px;">' : '<img src="drawnmoon-theme.png" style="width:22px;height:22px;">';
-    localStorage.setItem('theme', next);
-  });
+// ── DARK MODE (système par défaut, toggle sessionnel) ────────────
+const toggle = document.getElementById('themeToggle');
+const mq = window.matchMedia('(prefers-color-scheme: dark)');
+let manualOverride = false;
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  toggle.innerHTML = theme === 'dark'
+    ? '<img src="drawnsun-theme.png" style="width:22px;height:22px;">'
+    : '<img src="drawnmoon-theme.png" style="width:22px;height:22px;">';
+}
+
+// Init depuis le système
+applyTheme(mq.matches ? 'dark' : 'light');
+
+// Clic : bascule manuelle (session seulement, pas de localStorage)
+toggle.addEventListener('click', () => {
+  manualOverride = true;
+  const current = document.documentElement.dataset.theme;
+  applyTheme(current === 'dark' ? 'light' : 'dark');
+});
+
+// Si le système change en cours de session et que l'user n'a pas touché le toggle
+mq.addEventListener('change', (e) => {
+  if (!manualOverride) applyTheme(e.matches ? 'dark' : 'light');
+});
 
   // ── MOBILE MENU ──────────────────────────────────────────────────
   const burger = document.getElementById('burger');
