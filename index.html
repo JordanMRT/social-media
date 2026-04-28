@@ -52,6 +52,12 @@
       --label: #005dae;
     }
 
+    .container {
+  max-width: 1100px;  /* la largeur de ta colonne centrale */
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
     /* ─── RESET & BASE ──────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
@@ -138,15 +144,27 @@
 
     /* ─── HERO ──────────────────────────────────────────────────── */
     #hero {
-      min-height: 100dvh;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      padding: calc(var(--nav-height) + 2rem) clamp(1.5rem, 5vw, 4rem) 4rem;
-      gap: 3rem;
-      position: relative;
-      overflow: hidden;
-    }
+  min-height: 100dvh;
+
+  padding:
+    calc(var(--nav-height) + 2rem)
+    0
+    4rem;
+
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  gap: 3rem;
+  min-height: calc(
+    100dvh - var(--nav-height)
+  );
+}
+
     /* Animated background blobs */
     #hero::before, #hero::after {
       content: ''; position: absolute; border-radius: 50%;
@@ -426,11 +444,11 @@
       cursor: default;
     }
 
-    /*.skill-card:hover {
+    .skill-card:hover {
       transform: translateY(-6px);
       box-shadow: var(--shadow-lg);
       border-color: var(--accent);
-    }*/
+    }
 
     .skill-icon {
       width: 56px; height: 56px;
@@ -494,18 +512,26 @@
     /* ─── PORTFOLIO ─────────────────────────────────────────────── */
     .portfolio-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 1.5rem;
     }
     .portfolio-card {
       border-radius: var(--radius);
-      overflow: hidden;
+      /*overflow: hidden;*/
       position: relative;
       aspect-ratio: 4/3;
       box-shadow: var(--shadow);
       cursor: pointer;
       border: solid 1px var(--bg2);
     }
+
+    .portfolio-card .card-img-wrap {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
     .portfolio-card img {
       width: 100%; height: 100%; object-fit: cover;
       transition: transform .5s cubic-bezier(.16,1,.3,1);
@@ -554,6 +580,74 @@
       color: rgba(255,255,255,.9); font-size: .8rem; font-weight: 600;
     }
     .portfolio-cta svg { width: 14px; height: 14px; stroke: currentColor; }
+
+    /* TEST */
+    .portfolio-item {
+  display: flex;
+  flex-direction: column;
+  gap: .75rem;
+}
+.portfolio-meta {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+.portfolio-tag {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 10%, transparent);
+  border-radius: 100px;
+  border: 1px solid var(--accent);
+  padding: .2rem .7rem;
+}
+.portfolio-name {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: .95rem;
+}
+.portfolio-year {
+  font-size: .82rem;
+  color: var(--text-muted);
+  margin-left: auto; /* pousse l'année à droite */
+}
+
+.portfolio-card .peek {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+  opacity: 0;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 10px var(--text));
+  z-index: 10;
+  transition: opacity .3s ease, transform .35s cubic-bezier(.16,1,.3,1);
+}
+
+.portfolio-card .peek-tl {
+  top: 10px; left: 10px;
+  transform: translate(-6px, -6px) rotate(-12deg);
+}
+.portfolio-card .peek-tr {
+  top: 10px; right: 10px;
+  transform: translate(6px, -6px) rotate(10deg);
+}
+.portfolio-card .peek-bl {
+  bottom: 10px; left: 10px;
+  transform: translate(-6px, 6px) rotate(8deg);
+}
+.portfolio-card .peek-br {
+  bottom: 10px; right: 10px;
+  transform: translate(6px, 6px) rotate(-10deg);
+}
+
+.portfolio-card:hover .peek { opacity: 1; }
+.portfolio-card:hover .peek-tl { transform: translate(-20px, -20px) rotate(-12deg); }
+.portfolio-card:hover .peek-tr { transform: translate(20px, -20px) rotate(10deg); }
+.portfolio-card:hover .peek-bl { transform: translate(-20px, 20px) rotate(8deg); }
+.portfolio-card:hover .peek-br { transform: translate(20px, 20px) rotate(-10deg); }
 
     /* ─── EXPÉRIENCES ───────────────────────────────────────────── */
     #experience { background: var(--bg2); }
@@ -718,7 +812,7 @@
 
     [data-theme="dark"] .mascot {
       /* filter: invert(); */
-      filter: drop-shadow(0px 0px 55px var(--accent));
+      filter: drop-shadow(0px 0px 20px var(--accent));
     }
 
     /* ─── COPYRIGHT ────────────────────────────────────────────────── */
@@ -759,7 +853,19 @@
 
     /* ─── RESPONSIVE ────────────────────────────────────────────── */
     @media (max-width: 900px) {
-      #hero { grid-template-columns: 1fr; text-align: center; }
+      .hero-grid {
+  grid-template-columns: 1fr;
+}
+
+#hero {
+  text-align: center;
+  min-height: auto;
+}
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
       .hero-cta { justify-content: center; }
       .hero-subtitle { margin-left: auto; margin-right: auto; }
       .hero-visual { order: -1; }
@@ -803,6 +909,73 @@
     font-size: 1.6rem;
   }
 
+}
+
+/* ─── HERO MOBILE FIX STRUCTUREL ───────────────────────────── */
+
+.hero-grid > * {
+  min-width: 0;
+}
+
+/* Mobile */
+
+@media (max-width: 900px) {
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+
+    /* FIX PRINCIPAL */
+    min-height: auto;
+  }
+
+  #hero {
+    text-align: center;
+  }
+
+  .hero-content {
+    max-width: 520px;
+    margin: 0 auto;
+    align-items: center;
+  }
+
+  .hero-cta {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    order: -1;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Taille image contrôlée */
+  .hero-photo-wrap {
+    width: 100%;
+    max-width: 260px;
+    margin: 0 auto;
+  }
+
+}
+
+/* Ajustement container mobile */
+
+@media (max-width: 600px) {
+
+  .container {
+    padding: 0 1.25rem;
+  }
+
+  .hero-photo-wrap {
+    max-width: 240px;
+  }
+
+}
+
+/* Sécurité anti-débordement horizontal */
+
+body {
+  overflow-x: hidden;
 }
 
 /* ─── TEXTURE ────────────────────────────────────────────── */
@@ -860,41 +1033,44 @@
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-content">
-    <div class="hero-tag"><span class="dot"></span> Disponible pour de nouvelles opportunités</div>
-      <!--<img class="hero-sticker" src="plante01.png">-->
-    <h1 class="hero-title">
-      Je suis<br><span class="accent">Jordan Emerit</span>
-    </h1>
-    <p class="hero-subtitle">
-      Social Media Manager passionné par la création de contenu, la stratégie digitale et la croissance des communautés.
-    </p>
-    <div class="hero-cta">
-      <a href="https://calendly.com/jordanemerit/jordan-30-minutes-call" target="_blank" rel="noopener" class="btn-primary">
-        Réserver un appel
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-      <div class="social-links">
-        <!-- Instagram -->
-        <a href="https://www.instagram.com/jordan.mrt" target="_blank" rel="noopener" class="social-link" title="Instagram">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-        </a>
-        <!-- LinkedIn -->
-        <a href="https://linkedin.com/in/jordan-mrt" target="_blank" rel="noopener" class="social-link" title="LinkedIn">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-        </a>
-        <!-- TikTok -->
-        <a href="https://www.tiktok.com/@jordanmrt_" target="_blank" rel="noopener" class="social-link" title="TikTok">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.53V6.77a4.85 4.85 0 01-1.02-.08z"/></svg>
-        </a>
-      </div>
-    </div>
-  </div>
-  <div class="hero-visual">
-    <div class="hero-photo-wrap">
-      <img src="images/headpic.png" alt="Jordan Emerit" loading="eager"/>
-      <div class="hero-badge">
-        <span class="emoji">📍</span> Montpellier, France
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-tag">
+          <span class="dot"></span>
+          Disponible pour de nouvelles opportunités
+        </div>
+        <!--<img class="hero-sticker" src="plante01.png">-->
+        <h1 class="hero-title">
+          Je suis<br><span class="accent">Jordan Emerit</span>
+        </h1>
+        <p class="hero-subtitle">
+          Social Media Manager passionné par la création de contenu, la stratégie digitale et la croissance des communautés.
+        </p>
+          <div class="hero-cta">
+            <a href="https://calendly.com/jordanemerit/jordan-30-minutes-call" target="_blank" rel="noopener" class="btn-primary"> Réserver un appel <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+            <div class="social-links">
+              <!-- Instagram -->
+               <a href="https://www.instagram.com/jordan.mrt" target="_blank" rel="noopener" class="social-link" title="Instagram"> <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+              </a>
+              <!-- LinkedIn -->
+               <a href="https://linkedin.com/in/jordan-mrt" target="_blank" rel="noopener" class="social-link" title="LinkedIn"> <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+              <!-- TikTok -->
+               <a href="https://www.tiktok.com/@jordanmrt_" target="_blank" rel="noopener" class="social-link" title="TikTok"> <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.19 8.19 0 004.79 1.53V6.77a4.85 4.85 0 01-1.02-.08z"/></svg>
+              </a>
+            </div>
+          </div>
+          </div>
+      <div class="hero-visual">
+        <div class="hero-photo-wrap">
+          <img src="images/headpic.png" alt="Jordan Emerit" loading="eager"/>
+
+          <div class="hero-badge">
+            <span class="emoji">📍</span> Montpellier, France
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -902,6 +1078,7 @@
 
 <!-- À PROPOS -->
 <section id="about">
+  <div class="container">
   <div class="about-grid">
     <div class="reveal">
       <p class="section-label">À propos</p>
@@ -937,6 +1114,7 @@
 
 <!-- COMPÉTENCES -->
 <section id="services">
+  <div class="container">
   <p class="section-label reveal">Compétences</p>
   <h2 class="section-title reveal">Mes outils</h2>
   <p class="section-sub reveal">Plusieurs cordes à mon arc pour maximiser votre croissance.</p>
@@ -957,11 +1135,16 @@
       <div class="skill-icon"><img src="drawnsocialmedia.png" alt="Réseaux sociaux"></div>
       <h3>Réseaux Sociaux</h3>
     </div>
+    <div class="skill-card reveal reveal-delay-4">
+      <div class="skill-icon"><img src="drawnrobot.png" alt="Intelligence Artificielle"></div>
+      <h3>Intelligence Artificielle</h3>
+    </div>
   </div>
 </section>
 
 <!-- SOFT SKILLS -->
 <section id="skills">
+  <div class="container">
   <p class="section-label reveal">Soft Skills</p>
   <h2 class="section-title reveal">Compétences comportementales</h2>
   <p class="section-sub-skill reveal">Les 6 compétences dominantes issues des tests cognitifs Goshaba pour Oreegami.</p>
@@ -995,51 +1178,122 @@
 
 <!-- PORTFOLIO -->
 <section id="portfolio">
+  <div class="container">
   <p class="section-label reveal">Portfolio</p>
   <h2 class="section-title reveal">Mes réalisations</h2>
   <p class="section-sub reveal">Un aperçu de mes créations et présences sur les différentes plateformes.</p>
   <div class="portfolio-grid">
-    <a href="https://instagram.com/jordan.mrt" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-1">
-      <img src="images/portfolio/instagram.png" alt="Instagram Jordan Emerit" loading="lazy"/>
+    <!--ARCHIVE
+  <a href="https://jordanmrt.github.io/theletterclub/" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-4">
+      <img src="images/portfolio/theletterclub.png" alt="The Letter Club Jordan Emerit" loading="lazy"/>
       <div class="portfolio-overlay"></div>
       <div class="portfolio-glass">
-        <p class="tag">Réseaux Sociaux</p>
-        <h3>Instagram</h3>
-        <span class="portfolio-cta">Voir le profil <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </div>
-    </a>
-    <a href="https://www.tiktok.com/@jordanmrt_" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-2">
-      <img src="images/portfolio/tiktok.png" alt="TikTok Jordan Emerit" loading="lazy"/>
-      <div class="portfolio-overlay"></div>
-      <div class="portfolio-glass">
-        <p class="tag">Réseaux Sociaux</p>
-        <h3>TikTok</h3>
-        <span class="portfolio-cta">Voir le profil <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </div>
-    </a>
-    <a href="https://linkedin.com/in/jordan-mrt" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-3">
-      <img src="images/portfolio/linkedin.png" alt="LinkedIn Jordan Emerit" loading="lazy"/>
-      <div class="portfolio-overlay"></div>
-      <div class="portfolio-glass">
-        <p class="tag">Réseaux Sociaux</p>
-        <h3>LinkedIn</h3>
-        <span class="portfolio-cta">Voir le profil <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
-      </div>
-    </a>
-    <a href="http://codelyoko.ek.la/" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-4">
-      <img src="images/portfolio/eklablog.png" alt="Eklablog Jordan Emerit" loading="lazy"/>
-      <div class="portfolio-overlay"></div>
-      <div class="portfolio-glass">
-        <p class="tag">Web Mastering</p>
-        <h3>Eklablog</h3>
+        <p class="tag">Projet communautaire</p>
+        <h3>The Letter Club</h3>
         <span class="portfolio-cta">Voir le site <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
       </div>
-    </a>
+    </a>-->
+
+<div class="portfolio-item">
+  <span class="portfolio-name">Instagram</span>
+  <a href="https://instagram.com/jordan.mrt" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-1">
+    <div class="card-img-wrap">
+      <img src="images/portfolio/instagram1.jpeg" alt="Instagram Jordan Emerit" loading="lazy"/>
+      <div class="portfolio-overlay"></div>
+    </div>
+    <img src="drawnsocialmedia.png" class="peek peek-tl" aria-hidden="true"/>
+    <img src="drawnlightroom.png" class="peek peek-br" aria-hidden="true"/>
+    <div class="portfolio-glass">
+      <span class="portfolio-cta">Voir le profil <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </div>
+  </a>
+  <div class="portfolio-meta">
+    <span class="portfolio-tag">Réseaux Sociaux</span>
+    <!--<span class="portfolio-year">2024</span>-->
+  </div>
+</div>
+
+<div class="portfolio-item">
+  <span class="portfolio-name">TikTok</span>
+  <a href="https://www.tiktok.com/@jordanmrt_" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-1">
+    <div class="card-img-wrap">
+      <img src="images/portfolio/tiktok1.jpeg" alt="TikTok Jordan Emerit" loading="lazy"/>
+      <div class="portfolio-overlay"></div>
+    </div>
+    <img src="drawnsocialmedia.png" class="peek peek-tr" aria-hidden="true"/>
+    <img src="drawnlightroom.png" class="peek peek-bl" aria-hidden="true"/>
+    <div class="portfolio-glass">
+      <span class="portfolio-cta">Voir le profil <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </div>
+  </a>
+  <div class="portfolio-meta">
+    <span class="portfolio-tag">Réseaux Sociaux</span>
+    <!--<span class="portfolio-year">2024</span>-->
+  </div>
+</div>
+
+<div class="portfolio-item">
+  <span class="portfolio-name">LinkedIn</span>
+  <a href="https://linkedin.com/in/jordan-mrt" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-1">
+    <div class="card-img-wrap">
+      <img src="images/portfolio/linkedin1.jpeg" alt="LinkedIn Jordan Emerit" loading="lazy"/>
+      <div class="portfolio-overlay"></div>
+    </div>
+    <img src="drawnsocialmedia.png" class="peek peek-tl" aria-hidden="true"/>
+    <img src="drawnglasses.png" class="peek peek-br" aria-hidden="true"/>
+    <div class="portfolio-glass">
+      <span class="portfolio-cta">Voir le profil <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </div>
+  </a>
+  <div class="portfolio-meta">
+    <span class="portfolio-tag">Réseaux Sociaux</span>
+    <!--<span class="portfolio-year">2024</span>-->
+  </div>
+</div>
+
+    <div class="portfolio-item">
+  <span class="portfolio-name">The Letter Club</span>
+  <a href="https://jordanmrt.github.io/theletterclub/" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-1">
+    <div class="card-img-wrap">
+      <img src="images/portfolio/theletterclub.jpeg" alt="The Letter Club Jordan Emerit" loading="lazy"/>
+      <div class="portfolio-overlay"></div>
+    </div>
+    <img src="drawnillustrator.png" class="peek peek-tr" aria-hidden="true"/>
+    <img src="drawnnotebook.png" class="peek peek-bl" aria-hidden="true"/>
+    <div class="portfolio-glass">
+      <span class="portfolio-cta">Voir le site <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </div>
+  </a>
+  <div class="portfolio-meta">
+    <span class="portfolio-tag">Site web // Newsletter</span>
+    <span class="portfolio-year">2025</span>
+  </div>
+</div>
+
+<div class="portfolio-item">
+  <span class="portfolio-name">Lyokograph'</span>
+  <a href="http://codelyoko.ek.la/" target="_blank" rel="noopener" class="portfolio-card reveal reveal-delay-1">
+    <div class="card-img-wrap">
+      <img src="images/portfolio/eklablog1.jpeg" alt="Lyokograph Jordan Emerit" loading="lazy"/>
+      <div class="portfolio-overlay"></div>
+    </div>
+    <img src="drawnpapercup.png" class="peek peek-tl" aria-hidden="true"/>
+    <img src="drawnnotebook.png" class="peek peek-br" aria-hidden="true"/>
+    <div class="portfolio-glass">
+      <span class="portfolio-cta">Voir le site <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+    </div>
+  </a>
+  <div class="portfolio-meta">
+    <span class="portfolio-tag">Site web // Blog</span>
+    <span class="portfolio-year">2012 - 2020</span>
+  </div>
+</div>
   </div>
 </section>
 
 <!-- EXPÉRIENCES -->
 <section id="experience">
+  <div class="container">
   <p class="section-label reveal">Parcours</p>
   <h2 class="section-title reveal">Expériences</h2>
   <div class="timeline" style="margin-top:2.5rem">
